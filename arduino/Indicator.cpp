@@ -8,28 +8,53 @@ Indicator::Indicator(int pin) {
     pinMode(_pin, OUTPUT);
 }
 
-void Indicator::blink(int count, int length, bool repeatForever = false) {
+void Indicator::blink(int count, int duration, bool repeatForever) {
     do {
         for (int i = 1; i <= count; i++) {
             digitalWrite(_pin, HIGH);
-            delay(length);
+            delay(duration);
             digitalWrite(_pin, LOW);
             
-            int lengthMultiplier = 1;
+            int durationMultiplier = 1;
             
             // At the end of the loop
             if (i == count) {
-                // Double the length of the final 'off' phase
-                lengthMultiplier = 2;
+                // Double the duration of the final 'off' phase
+                durationMultiplier = 3;
             }
             
-            delay(length * lengthMultiplier);
+            delay(duration * durationMultiplier);
         }
     } while (repeatForever);
 }
 
-void Indicator::blinkPattern(char[] pattern, int length, bool repeatForever) {
+void Indicator::blinkPattern(char pattern[], int duration, bool repeatForever) {
+    int patternLength = strlen(pattern);
+    
     do {
-        
+        for (int i = 0; i < patternLength; i++) {
+            int intensity = 255;
+            
+            switch (pattern[i]) {
+            case ' ':
+                intensity = 0;
+                break;
+            case '_':
+                intensity = 7;
+                break;
+            case '-':
+                intensity = 63;
+                break;
+            case '*':
+                intensity = 255;
+                break;
+            }
+            
+            analogWrite(_pin, intensity);
+            
+            delay(duration);
+        }
     } while (repeatForever);
+    
+    digitalWrite(_pin, LOW);
 }

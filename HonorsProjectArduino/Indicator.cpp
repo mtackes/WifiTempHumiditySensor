@@ -2,9 +2,7 @@
 
 #include "Indicator.h"
 
-Indicator::Indicator(int pin) {
-    _pin = pin;
-    
+Indicator::Indicator(int pin) : _pin(pin) {    
     pinMode(_pin, OUTPUT);
 }
 

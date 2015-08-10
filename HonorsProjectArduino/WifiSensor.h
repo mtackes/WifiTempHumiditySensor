@@ -18,7 +18,6 @@
 class WifiSensor {
 public:
     WifiSensor();
-    void connectAll(int pointless);
     
 private:
     SFE_CC3000 wifi;

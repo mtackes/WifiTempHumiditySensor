@@ -17,10 +17,13 @@
 
 class WifiSensor {
 public:
-    WifiSensor();
+    WifiSensor(char ssid[], unsigned int security, char password[]);
     
 private:
     SFE_CC3000 wifi;
     SFE_CC3000_Client client;
     DHT dht;
+    char *ssid;
+    unsigned int security;
+    char *password;
 };

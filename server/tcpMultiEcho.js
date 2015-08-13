@@ -5,7 +5,10 @@ var clients = {};
 function clientConnected(socket) {
     var existingSocket = clients[socket.remoteAddress];
     
-    if (existingSocket) { existingSocket.end("closing duplicate connection"); }
+    if (existingSocket) {
+        existingSocket.end("closing duplicate connection");
+        console.log("disconnecting duplicate client at " + socket.remoteAddress);
+    }
     
     clients[socket.remoteAddress] = socket;
     

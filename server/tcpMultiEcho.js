@@ -13,17 +13,27 @@ function clientConnected(socket) {
     clients[socket.remoteAddress] = socket;
     
     socket.setEncoding("utf8");
-    socket.on("data", socketReceivedData);
+    // socket.on("data", socketReceivedData);
+    // socket.on("close", function(){removeThisClient(this, socket.remoteAddress)});
+    socket.on("end", removeThisClient.bind(null, socket, socket.remoteAddress));
 }
 
 function socketReceivedData(data) {
+    console.log(this.remoteAddress);
     for (address in clients) {
         clients[address].write(address + ": " + data.trim() + "\r\n");
     }
 }
 
-function removeThisClient() {
-    delete clients[this.remoteAddress];
+function removeThisClient(that, address) {
+    console.log(this);
+    console.log("\n\n\n\n");
+    console.log(that);
+    console.log("connection closed: " + address);
+    // if (clients[this.remoteAddress] === this) {
+    //     console.log("duplicate in close handler");
+    //     delete clients[this.remoteAddress];
+    // }
 }
 
 var tcpServer = net.createServer(clientConnected);

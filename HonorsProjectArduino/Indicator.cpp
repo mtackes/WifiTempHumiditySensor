@@ -2,16 +2,33 @@
 
 #include "Indicator.h"
 
-Indicator::Indicator(int pin) : _pin(pin) {    
-    pinMode(_pin, OUTPUT);
+Indicator::Indicator(int pin) : pin(pin), state(LOW) {    
+    pinMode(pin, OUTPUT);
 }
 
+void Indicator::on() {
+    state = HIGH;
+    digitalWrite(pin, state);
+}
+
+void Indicator::off() {
+    state = LOW;
+    digitalWrite(pin, state);
+}
+
+void Indicator::toggle() {
+    state = !state;
+    digitalWrite(pin, state);
+}
+
+// Synchronous `blink` and `blinkPattern` do not change state as they
+// block and return the led to the starting state when (if) they finish
 void Indicator::blink(int count, int duration, bool repeatForever) {
     do {
         for (int i = 1; i <= count; i++) {
-            digitalWrite(_pin, HIGH);
+            digitalWrite(pin, HIGH);
             delay(duration);
-            digitalWrite(_pin, LOW);
+            digitalWrite(pin, LOW);
             
             int durationMultiplier = 1;
             
@@ -24,6 +41,8 @@ void Indicator::blink(int count, int duration, bool repeatForever) {
             delay(duration * durationMultiplier);
         }
     } while (repeatForever);
+    
+    digitalWrite(pin, state);
 }
 
 void Indicator::blinkPattern(char pattern[], int duration, bool repeatForever) {
@@ -48,11 +67,21 @@ void Indicator::blinkPattern(char pattern[], int duration, bool repeatForever) {
                 break;
             }
             
-            analogWrite(_pin, intensity);
+            analogWrite(pin, intensity);
             
             delay(duration);
         }
     } while (repeatForever);
     
-    digitalWrite(_pin, LOW);
+    digitalWrite(pin, state);
+}
+
+void Indicator::blinkAsync(int duration) {
+    int currentTime = millis();
+    
+    if (currentTime - previousTime > duration) {
+        previousTime = currentTime;
+        toggle();
+    }
+    
 }

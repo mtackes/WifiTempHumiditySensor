@@ -3,37 +3,41 @@ var net = require("net");
 var clients = {};
 
 function clientConnected(socket) {
-    var existingSocket = clients[socket.remoteAddress];
+    var clientAddress = socket.remoteAddress;
+    var existingSocket = clients[clientAddress];
     
     if (existingSocket) {
-        existingSocket.end("closing duplicate connection");
-        console.log("disconnecting duplicate client at " + socket.remoteAddress);
+        existingSocket.end("closing duplicate connection\r\n");
+        console.log("disconnecting duplicate client at " + clientAddress);
     }
     
-    clients[socket.remoteAddress] = socket;
+    clients[clientAddress] = socket;
+    console.log(Object.keys(clients));
     
     socket.setEncoding("utf8");
-    // socket.on("data", socketReceivedData);
+    socket.on("data", socketReceivedData);
     // socket.on("close", function(){removeThisClient(this, socket.remoteAddress)});
-    socket.on("end", removeThisClient.bind(null, socket, socket.remoteAddress));
+    // socket.on("end", removeThisClient.bind(null, socket, socket.remoteAddress));
+    socket.setTimeout(5000, function(){
+        console.log("socket timeout event (one time)");
+    });
+    socket.on("close", function(){
+        removeThisClient(socket, clientAddress)
+    });
 }
 
 function socketReceivedData(data) {
-    console.log(this.remoteAddress);
     for (address in clients) {
-        clients[address].write(address + ": " + data.trim() + "\r\n");
+        clients[address].write(data);
     }
 }
 
-function removeThisClient(that, address) {
-    console.log(this);
-    console.log("\n\n\n\n");
-    console.log(that);
+function removeThisClient(socket, address) {
     console.log("connection closed: " + address);
-    // if (clients[this.remoteAddress] === this) {
-    //     console.log("duplicate in close handler");
-    //     delete clients[this.remoteAddress];
-    // }
+    if (clients[address] === socket) {
+        console.log("duplicate in close handler");
+        delete clients[address];
+    }
 }
 
 var tcpServer = net.createServer(clientConnected);

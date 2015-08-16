@@ -43,3 +43,13 @@ function removeThisClient(socket, address) {
 var tcpServer = net.createServer(clientConnected);
     
 tcpServer.listen(9487);
+
+var counter = 5095;
+function sendTimeAfterDelay() {
+    setTimeout(function(){
+        socketReceivedData("" + (counter++ * .01) + "\r\n");
+        sendTimeAfterDelay();
+    }, counter * 10);
+}
+
+setTimeout(function(){console.log("starting");sendTimeAfterDelay()}, 10000);

@@ -7,17 +7,13 @@
 #include "SFE_CC3000.h"
 #include "SFE_CC3000_Client.h"
 #include "DHT.h"
-
-// Config Constants
-#define WIFI_INTERRUPT  3
-#define WIFI_ENABLE     7
-#define WIFI_CHIPSELECT 10
-#define DHT_PIN         2
-#define DHT_TYPE        DHT22
+#include "Configuration.h"
 
 class WifiSensor {
 public:
-    WifiSensor(char ssid[], unsigned int security, char password[]);
+    WifiSensor(char ssid[] = WIFI_SSID,
+        unsigned int security = WIFI_SECURITY,
+        char password[] = WIFI_PASSWORD);
     
 private:
     SFE_CC3000 wifi;

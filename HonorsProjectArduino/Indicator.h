@@ -1,7 +1,7 @@
 // Indicator.h
 
-#ifndef Indicator_h
-#define Indicator_h
+#ifndef INDICATOR_H
+#define INDICATOR_H
 #endif
 
 #include <Arduino.h>

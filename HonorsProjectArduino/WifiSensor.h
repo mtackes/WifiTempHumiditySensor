@@ -1,7 +1,7 @@
 // WifiSensor.h
 
-#ifndef WifiSensor_h
-#define WifiSensor_h
+#ifndef WIFISENSOR_H
+#define WIFISENSOR_H
 #endif
 
 #include "SFE_CC3000.h"

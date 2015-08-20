@@ -11,15 +11,10 @@
 
 class WifiSensor {
 public:
-    WifiSensor(char ssid[] = WIFI_SSID,
-        unsigned int security = WIFI_SECURITY,
-        char password[] = WIFI_PASSWORD);
+    WifiSensor();
     
 private:
     SFE_CC3000 wifi;
     SFE_CC3000_Client client;
     DHT dht;
-    char *ssid;
-    unsigned int security;
-    char *password;
 };

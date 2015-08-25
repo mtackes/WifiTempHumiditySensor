@@ -23,6 +23,8 @@
 #define SERVER_ADDRESS  IPAddress(192, 168, 0, 100)
 #define SERVER_PORT     9487
 
+#define READ_INTERVAL   60000 // Time between data points (in millisecons)
+
 
 // Private Configration info not included in repo
 // Comment it out to use the definitions below instead

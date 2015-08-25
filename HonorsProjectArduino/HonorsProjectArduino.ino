@@ -10,6 +10,8 @@ WifiSensor module;
 Indicator status(LED_STATUS_PIN);
 Indicator error(LED_ERROR_PIN);
 
+unsigned long nextReadTime;
+
 void setup() {
     if (!module.init()) {
         error.blink(2, MEDIUM, true);
@@ -36,8 +38,16 @@ void setup() {
     }
     
     status.off();
+    
+    // Set read time to now since initialization has finished
+    nextReadTime = millis();
 }
 
 void loop() {
+    unsigned long currentTime = millis();
+    
+    if (currentTime >= nextReadTime) {
+        nextTime += READ_INTERVAL;
+    }
 }
 

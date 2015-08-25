@@ -1,3 +1,12 @@
+/*
+This was my go-to server at various points throughout the testing and planning 
+process. Large pieces are missing from the commits, and some things that 
+remain but are no longer used are artifacts of previous experiments.
+
+Despite this, it's committed to this repo for posterity.
+*/
+
+
 var net = require("net");
 
 var clients = {};

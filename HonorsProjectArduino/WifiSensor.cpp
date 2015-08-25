@@ -28,6 +28,10 @@ bool WifiSensor::isConnected() {
 }
 
 bool WifiSensor::closeConnection() {
+    // FIXME: See if there's a way to actually check for pending write data
+    // Delay closing for 1 second to allow final data to send properly
+    delay(1000);
+    
     return client.close();
 }
 

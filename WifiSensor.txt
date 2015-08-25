@@ -1,0 +1,45 @@
+WifiSensor
+
+Takes a DHT, CC3000, sync button pin
+On startup
+    Scan local IP range for server -> search blink (- ) repeat
+        No server found -> error blink (- - -   ) repeat
+    Send 'handshake' with MAC address
+        unknown sensor -> error blink (-- --   ) repeat
+        known sensor -> confirm blink (- -)
+    
+Sync button
+    When pressed, send 'connect' message to server
+    
+
+
+Persistence layout
+    0xFFFF (time_t 32-bits) starting timestamp
+    0xFFFF (unsigned long int) avg time interval in seconds
+    Count (unsigned int)
+    Entries[Count]
+
+Search for server
+    Connect to AP
+    Get IP address from Connection Info
+    Strip last octet
+    0..<256
+        Replace last octet
+        Connect to IP at known server ports
+        
+Periodically send data
+    Open connection to server
+    Send data
+        Module id (mac address) - format /[0-9A-F]{12}/
+        separator
+        temperature (celcius, could be negative) - format /-?\d{1,3}\.\d/
+        separator
+        humidity (percentage) - format /\d{1,2}\.\d/
+    Data ranges
+        temp - -40 - 80, 0.1 resolution
+        humidity - 0 - 100, 0.1 resolution
+
+Grouping multiple data events
+    When a connection is established, create a buffer for that connection.
+    Pipe data from that socket to the buffer.
+    When the connection ends, parse the data from the buffer.

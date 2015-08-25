@@ -48,6 +48,21 @@ void loop() {
     
     if (currentTime >= nextReadTime) {
         nextTime += READ_INTERVAL;
+        
+        status.on();
+        
+        if (!module.connectToServer()) {
+            error.blinkPattern("*-* ", MEDIUM, true);
+        }
+        
+        status.blink(1, SHORT);
+        module.sendData();
+        
+        if (!module.closeConnectionToServer()) {
+            error.blinkPattern("*-_", MEDIUM, true);
+        }
+        
+        status.off();
     }
 }
 

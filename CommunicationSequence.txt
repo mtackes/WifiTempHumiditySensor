@@ -1,0 +1,17 @@
+Server-Sensor Communication Sequence
+Notes on possible configuration and data formatting
+
+Server at port 9487 (phonepad code of WHTS - Wifi Humidity Temperature Sensor)
+
+v2 - When connected to access point, modules search subnet for response on port
+
+on connection:
+    module: send own MAC address 
+    server: reply with known-status of module
+
+if server knows module,
+    start operating normally
+if module is unknown,
+    indicate and wait for button press to sync
+
+...

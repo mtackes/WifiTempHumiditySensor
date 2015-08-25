@@ -31,6 +31,20 @@ bool WifiSensor::closeConnection() {
     return client.close();
 }
 
+void WifiSensor::sendStartup() {
+    sendSeparator();
+    sendIdentifier();
+    sendSeparator();
+}
+
+void WifiSensor::sendData() {
+    sendIdentifier();
+    sendSeparator();
+    sendTemperature();
+    sendSeparator();
+    sendHumidity();
+}
+
 void WifiSensor::sendIdentifier() {
     const int addressLength = 6;
     unsigned char macAddress[addressLength];

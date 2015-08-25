@@ -17,14 +17,17 @@ public:
     bool connectToServer();
     bool isConnected();
     bool closeConnection();
-    void sendIdentifier();
-    void sendTemperature();
-    void sendHumidity();
-    void sendSeparator();
-    void sendLineBreak();
+    void sendStartup();
+    void sendData();
     
 private:
     SFE_CC3000 wifi;
     SFE_CC3000_Client client;
     DHT dht;
+    
+    void sendIdentifier();
+    void sendTemperature();
+    void sendHumidity();
+    void sendSeparator();
+    void sendLineBreak();
 };

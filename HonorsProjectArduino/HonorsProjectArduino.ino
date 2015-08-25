@@ -52,6 +52,7 @@ void loop() {
         status.on();
         
         if (!module.connectToServer()) {
+            // TODO: Handle error instead of just trapping here
             error.blinkPattern("*-* ", MEDIUM, true);
         }
         
@@ -59,10 +60,10 @@ void loop() {
         module.sendData();
         
         if (!module.closeConnectionToServer()) {
+            // TODO: Handle error instead of just trapping here
             error.blinkPattern("*-_", MEDIUM, true);
         }
         
         status.off();
     }
 }
-

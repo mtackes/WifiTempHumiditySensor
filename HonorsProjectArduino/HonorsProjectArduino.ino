@@ -26,6 +26,16 @@ void setup() {
     if (!module.connectToServer()) {
         error.blink(4, SHORT, true);
     }
+    
+    status.on();
+    
+    module.sendStartup();
+    
+    if (!module.closeConnectionToServer()) {
+        error.blinkPattern("*_", MEDIUM, true);
+    }
+    
+    status.off();
 }
 
 void loop() {

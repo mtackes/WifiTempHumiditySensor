@@ -13,7 +13,7 @@ bool WifiSensor::init() {
     return wifi.init();
 }
 
-bool WifiSensor::connectWifi(unsigned int timeout) {
+bool WifiSensor::connectToWifi(unsigned int timeout) {
     Serial.println(WIFI_SSID);
     Serial.println(WIFI_PASSWORD);
     return wifi.connect(WIFI_SSID, WIFI_SECURITY, WIFI_PASSWORD, timeout);
@@ -23,11 +23,11 @@ bool WifiSensor::connectToServer() {
     return client.connect(SERVER_ADDRESS, SERVER_PORT);
 }
 
-bool WifiSensor::isConnected() {
+bool WifiSensor::isConnectedToServer() {
     return client.connected();
 }
 
-bool WifiSensor::closeConnection() {
+bool WifiSensor::closeConnectionToServer() {
     // FIXME: See if there's a way to actually check for pending write data
     // Delay closing for 1 second to allow final data to send properly
     delay(1000);

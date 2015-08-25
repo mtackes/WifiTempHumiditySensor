@@ -13,10 +13,10 @@ class WifiSensor {
 public:
     WifiSensor();
     bool init();
-    bool connectWifi(unsigned int timeout = 0);
+    bool connectToWifi(unsigned int timeout = 0);
     bool connectToServer();
-    bool isConnected();
-    bool closeConnection();
+    bool isConnectedToServer();
+    bool closeConnectionToServer();
     void sendStartup();
     void sendData();
     

@@ -6,8 +6,10 @@ function clientConnected(socket) {
     var clientAddress = socket.remoteAddress;
     var existingSocket = clients[clientAddress];
     
+    console.log("new connection at " + clientAddress);
+    
     if (existingSocket) {
-        existingSocket.end("closing duplicate connection\r\n");
+        existingSocket.end();
         console.log("disconnecting duplicate client at " + clientAddress);
     }
     
@@ -18,24 +20,32 @@ function clientConnected(socket) {
     socket.on("data", socketReceivedData);
     // socket.on("close", function(){removeThisClient(this, socket.remoteAddress)});
     // socket.on("end", removeThisClient.bind(null, socket, socket.remoteAddress));
-    socket.setTimeout(5000, function(){
+    // socket.setKeepAlive(true, 10000);
+    socket.setTimeout(20000, function(){
         console.log("socket timeout event (one time)");
+        this.end();
     });
     socket.on("close", function(){
-        removeThisClient(socket, clientAddress)
+        console.log("close socket");
+        removeThisClient(socket, clientAddress);
+    });
+    socket.on("end", function(){
+        console.log("end socket");
+        removeThisClient(socket, clientAddress);
     });
 }
 
 function socketReceivedData(data) {
-    for (address in clients) {
-        clients[address].write(data);
-    }
+    console.log("[" + this.remoteAddress + "]: " + data);
+    // for (address in clients) {
+    //     clients[address].write(data);
+    // }
 }
 
 function removeThisClient(socket, address) {
     console.log("connection closed: " + address);
     if (clients[address] === socket) {
-        console.log("duplicate in close handler");
+        console.log("removing closed connection from clients list");
         delete clients[address];
     }
 }
@@ -44,12 +54,12 @@ var tcpServer = net.createServer(clientConnected);
     
 tcpServer.listen(9487);
 
-var counter = 5095;
-function sendTimeAfterDelay() {
-    setTimeout(function(){
-        socketReceivedData("" + (counter++ * .01) + "\r\n");
-        sendTimeAfterDelay();
-    }, counter * 10);
-}
+// var counter = 5095;
+// function sendTimeAfterDelay() {
+//     setTimeout(function(){
+//         socketReceivedData("" + (counter++ * .01) + "\r\n");
+//         sendTimeAfterDelay();
+//     }, counter * 10);
+// }
 
-setTimeout(function(){console.log("starting");sendTimeAfterDelay()}, 10000);
+// setTimeout(function(){console.log("starting");sendTimeAfterDelay()}, 10000);

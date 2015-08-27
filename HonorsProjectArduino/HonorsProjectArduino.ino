@@ -47,7 +47,7 @@ void loop() {
     unsigned long currentTime = millis();
     
     if (currentTime >= nextReadTime) {
-        nextTime += READ_INTERVAL;
+        nextReadTime += READ_INTERVAL;
         
         status.on();
         

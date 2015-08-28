@@ -11,6 +11,7 @@ Indicator status(LED_STATUS_PIN);
 Indicator error(LED_ERROR_PIN);
 
 unsigned long nextReadTime;
+byte connectionMisses = 0;
 
 void setup() {
     if (!module.init()) {
@@ -46,14 +47,22 @@ void setup() {
 void loop() {
     unsigned long currentTime = millis();
     
+    if (connectionMisses) {
+        // Speeds up the blinking as number of misses increases
+        int duration = map(connectionMisses, 0, 255, 1000, 25);
+        error.blinkAsync(duration);
+    }
+    
     if (currentTime >= nextReadTime) {
         nextReadTime += READ_INTERVAL;
         
         status.on();
         
         if (!module.connectToServer()) {
-            // TODO: Handle error instead of just trapping here
-            error.blinkPattern("*-* ", MEDIUM, true);
+            module.closeConnectionToServer();
+            connectionMisses++;
+            error.blinkPattern("*-* *-* *-*", MEDIUM, connectionMisses == 255);
+            return;
         }
         
         status.blink(1, SHORT);

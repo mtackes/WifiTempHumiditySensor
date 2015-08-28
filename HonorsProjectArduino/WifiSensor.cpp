@@ -10,7 +10,23 @@ WifiSensor::WifiSensor() :
 
 bool WifiSensor::init() {
     dht.begin();
-    return wifi.init();
+    bool isInitialized = wifi.init();
+    
+    // If it initialized correctly
+    if (isInitialized) {
+        // Construct the `macAddress` instance variable
+        byte macAddressBytes[6];
+        wifi.getMacAddress(macAddressBytes);
+        
+        // For each byte
+        for (int i = 0; i < 6; i++) {
+            // Format it into the instance variable at the correct spot
+            // `i * 2` moves the insertion point one hex pair for each byte
+            sprintf(&macAddress[i * 2], "%02X", macAddressBytes[i]);
+        }
+    }
+    
+    return isInitialized;
 }
 
 bool WifiSensor::connectToWifi(unsigned int timeout) {
@@ -50,16 +66,7 @@ void WifiSensor::sendData() {
 }
 
 void WifiSensor::sendIdentifier() {
-    const int addressLength = 6;
-    unsigned char macAddress[addressLength];
-    wifi.getMacAddress(macAddress);
-    // Modified from SFE CC3000 'board test' example
-    for (int i = 0; i < addressLength; i++) {
-        if (macAddress[i] < 0x10) {
-            client.print("0");
-        }
-        client.print(macAddress[i], HEX);
-    }
+    client.print(macAddress);
 }
 
 void WifiSensor::sendTemperature() {

@@ -24,6 +24,7 @@ private:
     SFE_CC3000 wifi;
     SFE_CC3000_Client client;
     DHT dht;
+    char macAddress[13];
     
     void sendIdentifier();
     void sendTemperature();

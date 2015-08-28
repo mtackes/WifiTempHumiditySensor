@@ -40,6 +40,7 @@ function clientConnected(socket) {
     });
     socket.on("end", function(){
         console.log("end socket");
+        socket.destroy();
         removeThisClient(socket, clientAddress);
     });
 }

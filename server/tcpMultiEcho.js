@@ -43,6 +43,13 @@ function clientConnected(socket) {
         socket.destroy();
         removeThisClient(socket, clientAddress);
     });
+    socket.on("error", function(error) {
+        console.log("\n\n*********************\n\n");
+        console.log(this);
+        console.log("\n\n*********************\n\n");
+        console.log(error);
+        console.log("\n\n*********************\n\n");
+    });
 }
 
 function socketReceivedData(data) {

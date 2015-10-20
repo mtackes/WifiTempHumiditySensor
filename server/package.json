@@ -1,0 +1,15 @@
+{
+  "name": "wifi-temp-humidity-server",
+  "version": "0.0.1",
+  "description": "A server to store and retrieve values from wifi-connected Arduino sensors.",
+  "main": "server.js",
+  "dependencies": {
+    "mongodb": "^2.0.46"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "mtackes",
+  "license": "AGPL-3.0"
+}

@@ -1,13 +1,9 @@
 var net = require("net");
 var mongo = require("mongodb").MongoClient;
 
-
 var dataPointFormat = /([0-9a-f]{12});(\d{1,3}\.\d);(\d{1,2}\.\d)/i;
 
 module.exports = function(mongoURL, tcpPortNumber) {
-    var net = require("net");
-    var mongo = require("mongodb").MongoClient;
-
     mongo.connect(mongoURL, function(err, db) {
         if (err) {
             console.log(err);

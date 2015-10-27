@@ -32,7 +32,7 @@ function clientConnected(socket, db) {
     socket.setEncoding("utf8");
     
     socket.on("data", function(data) {
-        socketReceivedData(data, db);
+        socketReceivedData.bind(this)(data, db);
     });
     
     // socket.on("close", function(){removeThisClient(this, socket.remoteAddress)});

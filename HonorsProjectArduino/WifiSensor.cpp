@@ -32,7 +32,10 @@ bool WifiSensor::init() {
 bool WifiSensor::connectToWifi(unsigned int timeout) {
     Serial.println(WIFI_SSID);
     Serial.println(WIFI_PASSWORD);
-    return wifi.connect(WIFI_SSID, WIFI_SECURITY, WIFI_PASSWORD, timeout);
+
+    // (char *) casts to sidestep warning
+    // SFE CC3000 Library would need to update to fix this properly
+    return wifi.connect((char *)WIFI_SSID, WIFI_SECURITY, (char *)WIFI_PASSWORD, timeout);
 }
 
 bool WifiSensor::connectToServer() {

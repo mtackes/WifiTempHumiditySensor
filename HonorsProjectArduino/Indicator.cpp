@@ -45,7 +45,7 @@ void Indicator::blink(int count, int duration, bool repeatForever) {
     digitalWrite(pin, state);
 }
 
-void Indicator::blinkPattern(char pattern[], int duration, bool repeatForever) {
+void Indicator::blinkPattern(const char pattern[], int duration, bool repeatForever) {
     int patternLength = strlen(pattern);
     
     do {

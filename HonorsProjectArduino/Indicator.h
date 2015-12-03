@@ -18,7 +18,7 @@ public:
     void toggle();
     
     void blink(int count, int duration, bool repeatForever = false);
-    void blinkPattern(char pattern[], int duration, bool repeatForever = false);
+    void blinkPattern(const char pattern[], int duration, bool repeatForever = false);
     
     void blinkAsync(int duration);
     

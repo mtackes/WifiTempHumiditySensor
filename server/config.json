@@ -1,0 +1,16 @@
+{
+    "mongo": {
+        "url": "mongodb://localhost:27017/temperatureHumidity",
+        "collection": "data"
+    },
+    
+    "dataInput": {
+        "port": 9487
+    },
+    
+    "sensors": {
+        "70FF76026B43": "Desk",
+        "70FF76026B56": "Thermostat",
+        "70FF76026D7C": "Bedroom"
+    }
+}

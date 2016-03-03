@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>All Data</title>
+    <script src="/jquery.min.js"></script>
+    <script src="/highcharts.js"></script>
+    <style>
+    html, body {
+        height: 100%;
+    }
+    /* Hide the Highcharts link */
+    .highcharts-container svg > text:last-child {
+        display: none;
+    }
+    </style>
+</head>
+<body>
+    <script>
+    var sensors = {
+        "70FF76026B43": "Desk",
+        "70FF76026B56": "Thermostat",
+        "70FF76026D7C": "Bedroom"
+    };
+    
+    function celciusToFahrenheit(tempInCelcius) {
+        return Math.round(100 * (tempInCelcius * 9 / 5 + 32)) / 100;
+    }
+    
+    $(function() {
+        Highcharts.setOptions({
+            global: {
+                useUTC: false
+            }
+        });
+        
+        $.get("/data/", function(jsonData, status, xhr) {
+            var allSeriesById = {};
+            
+            // var allData = {};
+            
+            jsonData.forEach(function(dataPoint) {
+                var humanReadableId = sensors[dataPoint.hardwareId];
+                var seriesData = allSeriesById[humanReadableId];
+                
+                if (!seriesData) {
+                    seriesData = [];
+                    allSeriesById[humanReadableId] = seriesData;
+                }
+                
+                seriesData.push([
+                    Date.parse(dataPoint.date),
+                    celciusToFahrenheit(dataPoint.temperature)
+                ]);
+            });
+            
+            var allSeries = [];
+            for (var seriesId in allSeriesById) {
+                var series = {
+                    name: seriesId,
+                    data: allSeriesById[seriesId]
+                }
+                
+                allSeries.push(series);
+            }
+            
+            chartWithSeries(allSeries);
+        });
+    });
+    
+    function chartWithSeries(series) {
+        $(document.body).highcharts("StockChart", {
+            chart: {
+                marginBotom: 30
+                // backgroundColor: {
+                //     linearGradient: [0, 0, 500, 500],
+                //     stops: [
+                //         [0, 'rgb(255, 255, 255)'],
+                //         [1, 'rgb(240, 240, 255)']
+                //     ]
+                // }
+            },
+            legend: {
+                enabled: true
+            },
+            rangeSelector: {
+                buttons: [
+                    {
+                        count: 1,
+                        type: "hour",
+                        text: "1H"
+                    },
+                    {
+                        count: 6,
+                        type: "hour",
+                        text: "6H"
+                    },
+                    {
+                        count: 12,
+                        type: "hour",
+                        text: "12H"
+                    },
+                    {
+                        count: 1,
+                        type: "day",
+                        text: "1D"
+                    },
+                    {
+                        type: "all",
+                        text: "All"
+                    }
+                ],
+                selected: 2
+            },
+            title: {
+                text: "Temperature Chart"
+            },
+            xAxis: {
+                minRange: 3600 * 1000 // One hour
+            },
+            yAxis: {
+                title: {
+                    text: "Temperature (° Fahrenheit)"
+                }
+            },
+            series: series
+        });
+    }
+    </script>
+</body>
+</html>
